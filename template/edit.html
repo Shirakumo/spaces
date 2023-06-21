@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Space</title>
+    <link rel="stylesheet" @href="spaces/static/spaces/spaces.css">
+  </head>
+  <body class="spaces-internal-page" id="spaces-edit-page">
+    <h1>Edit <a @href="spaces/{0} (user:username (auth:current))">Your Space</a></h1>
+    <h2>Upload</h2>
+    <form method="post" @action="spaces/api/spaces/upload">
+      <input type="text" name="path" maxlength="128" placeholder="< will use uploaded file name >">
+      <input type="file" name="file" multiple required autofocus
+             lquery='(attr :accept (format NIL "~{~a~^,~}" (mconfig :spaces :allowed-mime-types)))'>
+      <input type="submit" value="Upload">
+    </form>
+    <c:let files="(spaces::user-files (auth:current))">
+      <c:when test="files">
+        <h2>Delete</h2>
+        <form method="post" @action="spaces/api/spaces/delete">
+          <ul iterate="files">
+            <li>
+              <input type="checkbox" name="files[]" lquery="(val *)">
+              <span lquery="(text *)"></span>
+            </li>
+          </ul>
+          <input type="submit" value="Delete">
+        </form>
+      </c:when>
+    </c:let>
+  </body>
+</html>

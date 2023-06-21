@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Spaces</title>
+    <link rel="stylesheet" @href="spaces/static/spaces/spaces.css">
+  </head>
+  <body class="spaces-internal-page" id="spaces-edit-page">
+    <h1>Welcome to Spaces</h1>
+    <p>
+      Spaces is a simple web hosting place, similar in vibes to the Geocities of old.
+    </p>
+    <c:if test="(auth:current)">
+      <c:then>
+        <p>
+          You can visit your own space <a @href="spaces/{0}/ (user:username (auth:current))">here</a> and edit the page or upload new content by clicking the <code>Edit</code> button in the top right.
+        </p>
+      </c:then>
+      <c:else>
+        <p>
+          If you <a @href="<auth page login #>">log in</a> you'll be able to visit your own space and edit it.
+        </p>
+      </c:else>
+    </c:if>
+  </body>
+</html>

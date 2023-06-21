@@ -1,0 +1,66 @@
+("#spaces-edit-page"
+ (input
+  :width 100%
+  :font-size inherit
+  :margin 0.1em
+  :box-sizing border-box
+  :border 1px solid (hex A0A0A0)
+  :border-radius 0.2em)
+ (input[type=file]
+  :padding 2em 2em
+  :background (hex F0F0F0))
+ ((:or input[type=file] input[type=submit])
+  :cursor pointer))
+
+(.spaces-internal-page
+ :font-family "sans-serif"
+ :font-size 16pt
+ :margin 0 auto
+ :max-width 800px
+ (h1 :text-align center)
+ (a :text-decoration none
+    :color (hex 505050))
+ ((:and a :hover)
+  :color (hex 808080)))
+
+("#spaces-injection"
+ :position absolute
+ :z-index 100000000
+ :right 0 :top 0
+ (>a.edit
+  :font-family "sans-serif"
+  :text-decoration none
+  :font-size 18px
+  :padding 0.2em 0.5em
+  :margin 5px
+  :display block
+  :border 1px solid (hex 808080)
+  :border-radius 0.2em
+  :background (hex FFFFFF)
+  :color (hex 151515)
+  :opacity 0.5
+  :transition opacity 0.5s)
+ ((:and >a.edit :hover)
+  :opacity 1.0)
+ (>.editor
+  :display none))
+
+((:and "#spaces-injection" .open)
+ :position fixed
+ :bottom 0
+ :width 30vw
+ :background (hex 151515)
+ :border-left 2px solid (hex 151515)
+ :box-shadow 0 0 50px (hex 151515)
+ (>a.edit :display none)
+ (>.editor
+  :display flex
+  :flex-direction column
+  :height 100%
+  (textarea :flex-grow 1)
+  (".CodeMirror" :flex-grow 1))
+ (input[type=submit]
+  :width 100%
+  :font-size inherit
+  :cursor pointer
+  :border none))
