@@ -56,6 +56,7 @@
     (setf (plump:attribute meta "content") (enough-namestring path (user-directory user)))
     (plump:append-child target injection))
   ;; Now save the file.
+  (ensure-directories-exist path)
   (with-open-file (stream path :direction :output :if-exists :supersede)
     (plump:serialize content stream)))
 
@@ -65,6 +66,8 @@
     (r-clip:process T)))
 
 (define-page view-user-content "spaces/(.+?)(:?/(.*))?$" (:uri-groups (user path))
+  (when (string= user "static")
+    (invoke-restart 'abort-handling))
   (setf (header "Cache-Control") "public")
   (let ((file (user-pathname user (or path ""))))
     (unless (pathname-name file)
@@ -86,7 +89,6 @@
                      (T
                       (auth:current))))
          (path (user-pathname user path)))
-    (ensure-directories-exist path)
     (let ((plump:*tag-dispatchers* plump:*html-tags*))
       (upload-html (plump:parse content) path user))
     (api-return "File uploaded")))
@@ -98,7 +100,6 @@
                      (T
                       (auth:current))))
          (path (user-pathname user (or path ""))))
-    (ensure-directories-exist path)
     (dolist (file files[])
       (let ((path (merge-pathnames path (second file))))
         (check-mime-type (third file))

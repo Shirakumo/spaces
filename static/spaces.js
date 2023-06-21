@@ -13,6 +13,7 @@ var Spaces = function(){
         if(!form){
             form = document.createElement("form");
             form.classList.add("editor");
+            form.setAttribute("method", "post");
             form.setAttribute("action", "/api/spaces/save");
             form.innerHTML = '<textarea name="content"></textarea><input type="hidden" name="path" value="index.html"><input type="hidden" name="browser" value="true"><input type="submit" value="Save">';
             injectionArea.appendChild(form);
