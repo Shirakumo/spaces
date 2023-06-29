@@ -20,7 +20,7 @@
 
 (defun user-files (user)
   (let ((files ())
-        (base (user-directory user)))
+        (base (uiop:resolve-symlinks (user-directory user))))
     (dolist (path (directory (merge-pathnames #p"**/*.*" base)))
       (push (enough-namestring path base) files))
     (sort files #+sbcl #'sb-unicode:unicode< #-sbcl #'string<)))
