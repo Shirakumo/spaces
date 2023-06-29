@@ -150,8 +150,12 @@ var Spaces = function(){
                 }else if(!el.querySelector("#spaces-injection")){
                     dst.appendChild(el.cloneNode(true));
                 }else{
-                    var dstElement = el.cloneNode(false);
-                    dst.appendChild(dstElement);
+                    var dstElement = null;
+                    [].forEach.call(dst.children, function(el){
+                        if(el.contains(injectionArea)){
+                            dstElement = el;
+                        }
+                    });
                     transfer(el, dstElement);
                 }
             });
