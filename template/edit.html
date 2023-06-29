@@ -9,8 +9,9 @@
     <h2>Upload</h2>
     <form method="post" @action="spaces/api/spaces/upload">
       <input type="text" name="path" maxlength="128" placeholder="< will use uploaded file name >">
-      <input type="file" name="file" multiple required autofocus
+      <input type="file" name="files[]" multiple required autofocus
              lquery='(attr :accept (format NIL "~{~a~^,~}" (mconfig :spaces :allowed-mime-types)))'>
+      <input type="hidden" name="browser" value="true">
       <input type="submit" value="Upload">
     </form>
     <c:let files="(spaces::user-files (auth:current))">
@@ -23,6 +24,7 @@
               <span lquery="(text *)"></span>
             </li>
           </ul>
+          <input type="hidden" name="browser" value="true">
           <input type="submit" value="Delete">
         </form>
       </c:when>
