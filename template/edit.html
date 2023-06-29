@@ -20,8 +20,8 @@
         <form method="post" @action="spaces/api/spaces/delete">
           <ul iterate="files">
             <li>
-              <input type="checkbox" name="files[]" lquery="(val *)">
-              <span lquery="(text *)"></span>
+              <input type="checkbox" name="files[]" lquery="(val *) (attr :id *)">
+              <label lquery="(text *) (attr :for *)"></label>
             </li>
           </ul>
           <input type="hidden" name="browser" value="true">

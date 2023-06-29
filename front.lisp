@@ -91,7 +91,7 @@
          (path (user-pathname user path)))
     (let ((plump:*tag-dispatchers* plump:*html-tags*))
       (upload-html (plump:parse content) path user))
-    (api-return "File uploaded")))
+    (api-return "Page saved")))
 
 (define-api spaces/upload (files[] &optional path user) (:access (perm spaces post))
   (let* ((user (cond (user
@@ -111,7 +111,7 @@
                  (upload-html (plump:parse (first file)) path user)))
               (T
                (uiop:copy-file (first file) path)))))
-    (api-return "File uploaded")))
+    (api-return "Files uploaded")))
 
 (define-api spaces/delete (files[] &optional user) (:access (perm spaces post))
   (let* ((user (cond (user

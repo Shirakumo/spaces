@@ -9,14 +9,28 @@ var Spaces = function(){
     if(document.querySelector("meta[name=path]"))
         self.path = document.querySelector("meta[name=path]").getAttribute("content");
 
-    var initForm = function(){
+    var initEdit = function(){
         if(!form){
             form = document.createElement("form");
             form.classList.add("editor");
             form.setAttribute("method", "post");
             form.setAttribute("action", "/api/spaces/save");
-            form.innerHTML = '<textarea name="content"></textarea><input type="hidden" name="path" value="index.html"><input type="hidden" name="browser" value="true"><input type="submit" value="Save">';
+            form.innerHTML = `\
+<textarea name="content"></textarea>
+<input type="hidden" name="path" value="index.html">
+<input type="hidden" name="browser" value="true">
+<input type="submit" value="Save">`;
             injectionArea.appendChild(form);
+
+            var uploader = document.createElement("form");
+            uploader.classList.add("uploader");
+            uploader.setAttribute("method", "post");
+            uploader.setAttribute("action", "/api/spaces/upload");
+            uploader.innerHTML = `\
+<input type="file" name="files[]" multiple required>
+<input type="hidden" name="browser" value="true">
+<input type="submit" value="Upload">`;
+            injectionArea.appendChild(uploader);
         }
         form.querySelector("input[name=path]").value = self.path;
     };
@@ -82,7 +96,7 @@ var Spaces = function(){
         return Promise.resolve(self.editor);
     };
 
-    initForm();
+    initEdit();
     injectionArea.addEventListener("click", function(ev){ ev.stopPropagation(); });
     injectionArea.querySelector("a.edit").addEventListener("click", function(ev){
         ev.preventDefault();

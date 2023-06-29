@@ -1,16 +1,19 @@
 ("#spaces-edit-page"
  (input
-  :width 100%
   :font-size inherit
   :margin 0.1em
-  :box-sizing border-box
+  :box-sizing border-box)
+ (input[type=text]
+  :width 100%
   :border 1px solid (hex A0A0A0)
   :border-radius 0.2em)
  (input[type=file]
+  :width 100%
   :padding 2em 2em
   :background (hex F0F0F0))
  ((:or input[type=file] input[type=submit])
-  :cursor pointer))
+  :cursor pointer)
+ (ul :list-style none))
 
 (.spaces-internal-page
  :font-family "sans-serif"
@@ -42,25 +45,39 @@
   :transition opacity 0.5s)
  ((:and >a.edit :hover)
   :opacity 1.0)
- (>.editor
+ (form
   :display none))
 
 ((:and "#spaces-injection" .open)
  :position fixed
+ :display flex
+ :flex-direction column
  :bottom 0
  :width 30vw
  :background (hex 151515)
  :border-left 2px solid (hex 151515)
  :box-shadow 0 0 50px (hex 151515)
  (>a.edit :display none)
- (>.editor
+ (form
   :display flex
   :flex-direction column
-  :height 100%
+  (input
+   :border 1px solid (hex 151515))
+  (input[type=submit]
+   :font-size inherit
+   :cursor pointer))
+ (form.editor
+  :display flex
+  :flex-grow 1
   (textarea :flex-grow 1)
-  (".CodeMirror" :flex-grow 1))
- (input[type=submit]
-  :width 100%
-  :font-size inherit
-  :cursor pointer
-  :border none))
+  (".CodeMirror" :flex-grow 1)
+  (input[type=submit] :width 100%))
+ (form.uploader
+  :display flex
+  :flex-direction row
+  (input[type=file]
+   :background (hex E0E0E0)
+   :flex-grow 1
+   :min-width 3em)
+  (input[type=submit]
+   :min-width 5em)))
