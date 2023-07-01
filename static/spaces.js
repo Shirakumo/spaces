@@ -34,43 +34,39 @@ var Spaces = function(){
         });
     };
 
-    var ajaxForm = function(form){
-        return new Promise(function(ok, fail){
-            form.addEventListener("submit", function(ev){
-                ev.preventDefault();
-                [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
-                    el.disabled = true;
-                });
-                var data = new FormData(form);
-                data.delete("browser");
-                
-                loadPage(form.getAttribute("action"), data, {responseType: 'json'})
-                    .then(function(response){
-                        [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
-                            el.removeAttribute("disabled");
-                        });
-                        ok(response);
-                    })
-                    .catch(fail);
+    var ajaxForm = function(form, ok, fail){
+        form.addEventListener("submit", function(ev){
+            ev.preventDefault();
+            [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
+                el.disabled = true;
             });
+                var data = new FormData(form);
+            data.delete("browser");
+            
+            loadPage(form.getAttribute("action"), data, {responseType: 'json'})
+                .then(function(response){
+                    [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
+                        el.removeAttribute("disabled");
+                    });
+                    ok(response);
+                })
+                .catch(fail);
         });
     };
 
     var standardAjaxForm = function(form){
-        return ajaxForm(form)
-            .catch(function(request){
-                alert(request.response["message"]);
-            })
-            .then(function(){
-                [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
-                    el.animate([
-                        { offset: 0.0, background: '#F8F8F8' },
-                        { offset: 0.1, background: 'green' },
-                        { offset: 0.3, background: 'green' },
-                        { offset: 1.0, background: '#F8F8F8' }
-                    ], 1000);
-                });
+        return ajaxForm(form, function(){
+            [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
+                el.animate([
+                    { offset: 0.0, background: '#F8F8F8' },
+                    { offset: 0.1, background: 'green' },
+                    { offset: 0.3, background: 'green' },
+                    { offset: 1.0, background: '#F8F8F8' }
+                ], 1000);
             });
+        }, function(request){
+            alert(request.response["message"]);
+        });
     };
 
     var initEdit = function(){
