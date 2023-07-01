@@ -60,6 +60,16 @@ var Spaces = function(){
         return ajaxForm(form)
             .catch(function(request){
                 alert(request.response["message"]);
+            })
+            .then(function(){
+                [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
+                    el.animate([
+                        { offset: 0.0, background: '#F8F8F8' },
+                        { offset: 0.1, background: 'green' },
+                        { offset: 0.3, background: 'green' },
+                        { offset: 1.0, background: '#F8F8F8' }
+                    ], 1000);
+                });
             });
     };
 
@@ -85,7 +95,8 @@ var Spaces = function(){
 <input type="hidden" name="browser" value="true">
 <input type="submit" value="Upload" title="Uploads the file under its filename.">`;
             injectionArea.appendChild(uploader);
-            ajaxForm(uploader);
+            standardAjaxForm(uploader)
+                .then(function(){uploader.querySelector("[type=file]").value = null;});
         }
         form.querySelector("input[name=path]").value = self.path;
     };
@@ -186,7 +197,7 @@ var Spaces = function(){
                 form.querySelector("textarea").value = self.editor.getValue();
                 replacePageContent(self.editor.getValue());
             });
-            ajaxForm(form);
+            standardAjaxForm(form);
             return refreshEditor();
         }
         return Promise.resolve(self.editor);
