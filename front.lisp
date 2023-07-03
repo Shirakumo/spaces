@@ -32,6 +32,9 @@
                 when user collect (user:username user))
           #+sbcl #'sb-unicode:unicode< #-sbcl #'string<)))
 
+(define-trigger user:remove (user)
+  (uiop:delete-directory-tree (user-directory user) :validate (constantly T)))
+
 (defun check-mime-type (type)
   (find type (config :allowed-mime-types) :test #'string=))
 
