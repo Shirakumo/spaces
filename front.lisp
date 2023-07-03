@@ -25,6 +25,13 @@
       (push (enough-namestring path base) files))
     (sort files #+sbcl #'sb-unicode:unicode< #-sbcl #'string<)))
 
+(defun list-spaces ()
+  (let ((wild (merge-pathnames pathname-utils:*wild-directory* (environment-module-directory #.*package* :data))))
+    (sort (loop for dir in (directory wild)
+                for user = (user:get (parse-integer (pathname-utils:directory-name dir)))
+                when user collect (user:username user))
+          #+sbcl #'sb-unicode:unicode< #-sbcl #'string<)))
+
 (defun check-mime-type (type)
   (find type (config :allowed-mime-types) :test #'string=))
 
@@ -62,8 +69,8 @@
 
 (define-page view-index "spaces/^$" ()
   (setf (header "Cache-Control") "public")
-  (r-clip:with-clip-processing ("index.html" "text/html")
-    (r-clip:process T)))
+   (r-clip:with-clip-processing ("index.html" "text/html")
+    (r-clip:process T :spaces (list-spaces))))
 
 (define-page view-user-content "spaces/(.+?)(:?/(.*))?$" (:uri-groups (user path))
   (when (string= user "static")
