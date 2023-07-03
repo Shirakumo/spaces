@@ -48,14 +48,14 @@ var Spaces = function(){
                     [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
                         el.removeAttribute("disabled");
                     });
-                    ok(response);
+                    if(ok) ok(response);
                 })
                 .catch(fail);
         });
     };
 
-    var standardAjaxForm = function(form){
-        return ajaxForm(form, function(){
+    var standardAjaxForm = function(form, ok, fail){
+        return ajaxForm(form, function(val){
             [].forEach.call(form.querySelectorAll("[type=submit]"), function(el){
                 el.animate([
                     { offset: 0.0, background: '#F8F8F8' },
@@ -64,8 +64,10 @@ var Spaces = function(){
                     { offset: 1.0, background: '#F8F8F8' }
                 ], 1000);
             });
+            if(ok) ok(val);
         }, function(request){
             alert(request.response["message"]);
+            if(fail) fail(request);
         });
     };
 
@@ -91,8 +93,9 @@ var Spaces = function(){
 <input type="hidden" name="browser" value="true">
 <input type="submit" value="Upload" title="Uploads the file under its filename.">`;
             injectionArea.appendChild(uploader);
-            standardAjaxForm(uploader)
-                .then(function(){uploader.querySelector("[type=file]").value = null;});
+            standardAjaxForm(uploader, function(){
+                uploader.querySelector("[type=file]").value = null;
+            });
         }
         form.querySelector("input[name=path]").value = self.path;
     };
